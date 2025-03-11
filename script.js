@@ -32,7 +32,8 @@ function createGrid(gridSize) {
   grid.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
   grid.style.width = "400px";
   grid.style.height = "400px";
-  grid.style.border = "2px solid black";
+  grid.style.border = "15px solid #c52e1a";
+  grid.style.borderRadius = "5px";
 
   // Ajouter les cases
   for (let i = 0; i < gridSize * gridSize; i++) {
