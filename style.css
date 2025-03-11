@@ -5,32 +5,79 @@
 }
 
 body {
-    max-width: 100vw;
-    height: 100vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: center;  /* Aligne tout depuis le haut */
     align-items: center;
+}
+
+.title {
+    font-size: 2rem;
+    text-align: center;
+    margin-top: 50px;
+    margin-bottom: 3em;
+}
+
+.wrapper {
+    width: 960px; /* Largeur fixe pour tout le contenu */
+    display: flex;
+    flex-direction: row; /* Les éléments sont en ligne : boutons à gauche, grille à droite */
+    justify-content: center; /* Met l'espace entre les éléments */
+    align-items: center; /* Les éléments sont alignés en haut */
+}
+
+.left {
+    display: flex;
+    flex-direction: column;  /* Les éléments à gauche (slider, label, bouton) sont en colonne */
+    align-items: flex-start;  /* Aligner les éléments à gauche */
+    margin-right: 6em;  /* Un peu d'espace entre les boutons et la grille */
 }
 
 #container {
-    display: flex;
-    width: 960px;
-    height: 960px;
-    justify-content: center;  /* Centre la grille */
-    align-items: center;
-}
-
-#grid {
-    display: flex;
-    flex-wrap: wrap;  /* Permet aux cases de passer à la ligne après 16 éléments */
+    display: grid;  /* Utilisation de Grid pour afficher la grille */
+    grid-template-columns: repeat(16, 1fr);  /* 16 colonnes égales */
+    grid-template-rows: repeat(16, 1fr);  /* 16 lignes égales */
     width: 400px;
     height: 400px;
 }
 
 .square {
-    width: 25px;
-    height: 25px;
-    border: 1px solid black;
+    width: 100%;
+    height: 100%;
     box-sizing: border-box;
+}
+
+#gridSizeLabel {
+    margin-top: 10px;
+    font-size: 20px;
+}
+
+input[type="range"] {
+    width: 100%;
+    max-width: 150px; /* Limite la largeur du slider */
+    margin: 10px 0;
+    
+}
+
+button {
+    padding: 10px 20px;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+}
+
+button:hover {
+    background-color: #c52e1a;
+    color: white;
+    transition: all .2s ease;
+}
+
+footer {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    font-size: 16px;
 }

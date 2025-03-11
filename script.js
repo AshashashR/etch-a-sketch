@@ -1,61 +1,74 @@
 const container = document.querySelector("#container");
+const gridSizeLabel = document.querySelector("#gridSizeLabel");
+const slider = document.querySelector("#gridSizeSlider");
+const blackBtn = document.querySelector("#blackBtn");
+const colorBtn = document.querySelector("#colorBtn");
+const resetBtn = document.querySelector("#resetBtn");
 
-const grid = document.createElement("div");
-grid.setAttribute("id", "grid");
-container.appendChild(grid);
+let currentMode = "black"; // Mode par défaut
 
-for (let i = 0; i < 256; i++) {
-  const square = document.createElement("div");
-  square.classList.add("square");
-
-  square.addEventListener("mouseover", () => {
-    square.style.backgroundColor = "gray";
-  });
-
-  grid.appendChild(square);
+// Fonction pour récupérer une couleur aléatoire
+function getRandomRGBColor() {
+  const r = Math.floor(Math.random() * 256);
+  const g = Math.floor(Math.random() * 256);
+  const b = Math.floor(Math.random() * 256);
+  return `rgb(${r}, ${g}, ${b})`;
 }
 
-const btn = document.querySelector("#btn");
+// Gestion du mode (black ou rainbow)
+blackBtn.addEventListener("click", () => (currentMode = "black"));
+colorBtn.addEventListener("click", () => (currentMode = "rainbow"));
 
-btn.addEventListener("click", () => {
-  let number;
-  do {
-    number = prompt("Enter a number of squares per side (1-100)");
-    if (number === null) return; // Permet à l'utilisateur d'annuler sans erreur
-    number = parseInt(number.trim(), 10);
-  } while (isNaN(number) || number < 1 || number > 100);
+// Création de la grille optimisée
+function createGrid(gridSize) {
+  // Nettoyer le conteneur avant de recréer la grille
+  container.innerHTML = ""; 
 
-  const oldGrid = document.getElementById("newgrid");
-  if (oldGrid) oldGrid.remove();
+  // Créer la grille
+  const grid = document.createElement("div");
+  grid.setAttribute("id", "grid");
+  grid.style.display = "grid";
+  grid.style.gridTemplateColumns = `repeat(${gridSize}, 1fr)`;
+  grid.style.gridTemplateRows = `repeat(${gridSize}, 1fr)`;
+  grid.style.width = "400px";
+  grid.style.height = "400px";
+  grid.style.border = "2px solid black";
 
-  grid.style.display = 'none';
+  // Ajouter les cases
+  for (let i = 0; i < gridSize * gridSize; i++) {
+    const square = document.createElement("div");
+    square.classList.add("square");
+    square.style.border = "1px solid #e3e3e3";
+    grid.appendChild(square);
+  }
 
+  container.appendChild(grid);
+}
 
-  const newGrid = document.createElement("div");
-  newGrid.setAttribute("id", "newgrid");
-  container.appendChild(newGrid);
-
-  newGrid.style.display = "grid";
-  newGrid.style.gridTemplateColumns = `repeat(${number}, 1fr)`;
-  newGrid.style.gridTemplateRows = `repeat(${number}, 1fr)`;
-  newGrid.style.width = "400px"; // Assure un cadre fixe
-  newGrid.style.height = "400px";
-
-  // 🔄 Génère les cases dynamiquement
-  for (let i = 0; i < number * number; i++) {
-    const newSquare = document.createElement("div");
-    newSquare.classList.add("newsquare");
-
-    // ⚡ Ajuste la taille des cases pour qu'elles soient carrées
-    newSquare.style.width = `${400 / number}px`;
-    newSquare.style.height = `${400 / number}px`;
-    newSquare.style.border = "1px solid gray";
-
-    // 🎨 Effet de survol
-    newSquare.addEventListener("mouseover", () => {
-      newSquare.style.backgroundColor = "gray";
-    });
-
-    newGrid.appendChild(newSquare);
+// EventListener unique pour changer la couleur des cases
+container.addEventListener("mouseover", (event) => {
+  if (event.target.classList.contains("square")) {
+    event.target.style.backgroundColor = currentMode === "black" ? "black" : getRandomRGBColor();
   }
 });
+
+// Debouncing : limite le nombre d'exécutions lors du déplacement du slider
+let debounceTimer;
+slider.addEventListener("input", () => {
+  clearTimeout(debounceTimer);
+  debounceTimer = setTimeout(() => {
+    const gridSize = slider.value;
+    gridSizeLabel.textContent = `${gridSize} x ${gridSize}`;
+    createGrid(gridSize);
+  }, 100); // Attente de 100ms avant d'exécuter createGrid()
+});
+
+// Bouton Reset
+resetBtn.addEventListener("click", () => {
+  document.querySelectorAll(".square").forEach(square => {
+    square.style.backgroundColor = "";
+  });
+});
+
+// Initialisation de la grille
+createGrid(slider.value);

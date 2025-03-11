@@ -1,14 +1,36 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="style.css">
     <title>Etch-a-Sketch</title>
 </head>
+
 <body>
-    <button id="btn">Clear</button>
-    <div id="container"></div>
+    <h1 class="title">Etch-a-Sketch</h1>
+    <div class="wrapper">
+
+        <div class="left">
+            <label for="gridSizeSlider">Grid Size:</label>
+            <div id="gridSizeLabel">16 x 16</div>
+            <input type="range" id="gridSizeSlider" min="4" max="100" value="16" step="1">
+
+            <div class="buttons">
+                <button id="blackBtn">Black</button>
+                <button id="colorBtn">Rainbow</button>
+                <button id="resetBtn">Clear</button>
+
+            </div>
+            
+        </div>
+
+        <div id="container"></div>
+    </div>
+
+    <footer>© Ashley R.</footer>
     <script src="script.js"></script>
 </body>
+
 </html>
